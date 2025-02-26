@@ -6,19 +6,26 @@
 #SBATCH --output=/home/mimeul/shares/MM/PRJEB57919/log/tbprofiler/tbprofiler_%A_%a.out
 #SBATCH --error=/home/mimeul/shares/MM/PRJEB57919/log/tbprofiler/tbprofiler_%A_%a.err
 
-# /sctmp was not in SINGULARITY_BINDPATH even though otherwise stated here: https://docs.s3it.uzh.ch/cluster/containers/
-export SINGULARITY_BINDPATH="$SINGULARITY_BINDPATH,/sctmp"
+#script is executed from a non-login shell, so some scripts need to be sourced:
+source /etc/profile.d/lmod.sh
 
 module load singularityce
+
+container_path=/home/mimeul/shares/MM/PRJEB57919/singu/quay.io-biocontainers-tb-profiler-6.3.0--pyhdfd78af_0.img
 
 sampleIdsString=$1
 rawdir=$2
 outdir=$3
 docx=$4
-container_path=/home/mimeul/shares/MM/PRJEB57919/singu/quay.io-biocontainers-tb-profiler-6.3.0--pyhdfd78af_0.img
+template_dir="$(dirname "$docx")"
+
+# /sctmp was not in SINGULARITY_BINDPATH even though otherwise stated here: https://docs.s3it.uzh.ch/cluster/containers/
+export SINGULARITY_BINDPATH="$SINGULARITY_BINDPATH,/sctmp,$rawdir,$outdir,$template_dir"
 
 IFS=',' read -r -a sampleIdsArray <<< "$sampleIdsString"
 sample_id=${sampleIdsArray["$SLURM_ARRAY_TASK_ID"]} 
+
+mkdir -p "$outdir"
 
 singularity exec -u "$container_path" tb-profiler profile \
     -1 "$rawdir/${sample_id}_1.fastq.gz" \
