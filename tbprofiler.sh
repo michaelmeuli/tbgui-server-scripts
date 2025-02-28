@@ -26,6 +26,7 @@ IFS=',' read -r -a sampleIdsArray <<< "$sampleIdsString"
 sample_id=${sampleIdsArray["$SLURM_ARRAY_TASK_ID"]} 
 
 mkdir -p "$outdir"
+chmod 777 "$outdir"
 
 singularity exec -u "$container_path" tb-profiler profile \
     -1 "$rawdir/${sample_id}_1.fastq.gz" \
