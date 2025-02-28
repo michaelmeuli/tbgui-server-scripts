@@ -20,7 +20,7 @@ docx=$4
 template_dir="$(dirname "$docx")"
 
 # /sctmp was not in SINGULARITY_BINDPATH even though otherwise stated here: https://docs.s3it.uzh.ch/cluster/containers/
-export SINGULARITY_BINDPATH="$SINGULARITY_BINDPATH,/sctmp,$rawdir,$outdir,$template_dir"
+export SINGULARITY_BINDPATH="/sctmp,$rawdir,$outdir,$template_dir"
 
 IFS=',' read -r -a sampleIdsArray <<< "$sampleIdsString"
 sample_id=${sampleIdsArray["$SLURM_ARRAY_TASK_ID"]} 
