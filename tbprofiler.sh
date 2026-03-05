@@ -36,7 +36,6 @@ chmod 777 "$outdir"
     -2 "$rawdir/${sample_id}_2.fastq.gz" \
     -p "${sample_id}" \
     --dir "$outdir" \
-    --prefix "$sample_id" \
     --docx \
     --docx_template "$docx" \
     --csv
