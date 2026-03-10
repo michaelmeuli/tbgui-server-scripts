@@ -14,7 +14,9 @@ source /etc/profile.d/z01_lmodenv.sh
 # Lmod itself (defines `module` function)
 source /etc/profile.d/lmod.sh
 
-container_path=/home/mimeul/shares/MM/PRJEB57919/singu/quay.io-biocontainers-tb-profiler-6.3.0--pyhdfd78af_0.img
+#container_path=/home/mimeul/shares/MM/PRJEB57919/singu/quay.io-biocontainers-tb-profiler-6.3.0--pyhdfd78af_0.img
+#apptainer pull tb-profiler_6.6.6.sif docker://quay.io/biocontainers/tb-profiler:6.6.6--pyhdfd78af_0
+container_path=/home/mimeul/shares/MM/PRJEB57919/singu/tb-profiler_6.6.6.sif
 
 sampleIdsString=$1
 rawdir=$2
