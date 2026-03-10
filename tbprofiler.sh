@@ -37,6 +37,6 @@ chmod 777 "$outdir"
     -p "${sample_id}" \
     --dir "$outdir" \
     --docx \
+    --docx_template "$docx" \
     --csv
 
-#     --docx_template "$docx" \
