@@ -14,7 +14,6 @@ source /etc/profile.d/z01_lmodenv.sh
 # Lmod itself (defines `module` function)
 source /etc/profile.d/lmod.sh
 
-#container_path=/home/mimeul/shares/MM/PRJEB57919/singu/quay.io-biocontainers-tb-profiler-6.3.0--pyhdfd78af_0.img
 #apptainer pull tb-profiler_6.6.6.sif docker://quay.io/biocontainers/tb-profiler:6.6.6--pyhdfd78af_0
 container_path=/home/mimeul/shares/MM/PRJEB57919/singu/tb-profiler_6.6.6.sif
 
@@ -24,16 +23,15 @@ outdir=$3
 docx=$4
 template_dir="$(dirname "$docx")"
 
-# /sctmp was not in SINGULARITY_BINDPATH even though otherwise stated here: https://docs.s3it.uzh.ch/cluster/containers/
-export APPTAINER_BINDPATH="/sctmp,$rawdir,$outdir,$template_dir"
-
 IFS=',' read -r -a sampleIdsArray <<< "$sampleIdsString"
 sample_id=${sampleIdsArray["$SLURM_ARRAY_TASK_ID"]} 
 
 mkdir -p "$outdir"
 chmod 777 "$outdir"
 
-/apps/u24/opt/x86_64_v3/apptainer-1.4.1-77twl7nju5gzjt7fbno55qnm7anmvxo7/bin/apptainer exec -u "$container_path" tb-profiler profile \
+/apps/u24/opt/x86_64_v3/apptainer-1.4.1-77twl7nju5gzjt7fbno55qnm7anmvxo7/bin/apptainer exec \
+-B /sctmp,/shares \
+"$container_path" tb-profiler profile \
     -1 "$rawdir/${sample_id}_1.fastq.gz" \
     -2 "$rawdir/${sample_id}_2.fastq.gz" \
     -p "${sample_id}" \
